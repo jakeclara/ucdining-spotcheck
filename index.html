@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>UCD Spot Check</title>
+<title>UCD Quick Check</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -127,7 +127,6 @@
     color: var(--text-soft);
   }
 
-  /* Section headers */
   .section-header {
     display: flex;
     align-items: center;
@@ -151,7 +150,6 @@
     border-top: 1.5px solid #e8c8c8;
   }
 
-  /* Category rows */
   .category {
     background: var(--white);
     border: 1px solid var(--border);
@@ -259,7 +257,6 @@
     color: #bbb;
   }
 
-  /* Submit */
   .submit-section {
     margin-top: 24px;
   }
@@ -289,7 +286,6 @@
     display: none;
   }
 
-  /* Result screen */
   #result-screen {
     display: none;
     max-width: 480px;
@@ -354,7 +350,6 @@
     font-style: italic;
   }
 
-  /* Email draft */
   .email-draft {
     background: #fafafa;
     border: 1px solid var(--border);
@@ -450,17 +445,15 @@
 
 <header>
   <div class="logo">UChicago Dining</div>
-  <h1>Daily Spot Check</h1>
+  <h1>Quick Check</h1>
   <div class="progress-bar">
     <div class="progress-fill" id="progress-fill"></div>
   </div>
 </header>
 
-<!-- FORM SCREEN -->
 <div id="form-screen">
 <div class="container">
 
-  <!-- Setup -->
   <div class="card" style="margin-top:4px;">
     <div class="card-title">Walkthrough Info</div>
     <div class="field">
@@ -491,7 +484,6 @@
     </div>
   </div>
 
-  <!-- FOH -->
   <div class="section-header">
     <span class="section-label">Front of House</span>
     <div class="section-line"></div>
@@ -562,7 +554,6 @@
     </div>
   </div>
 
-  <!-- BOH -->
   <div class="section-header">
     <span class="section-label">Back of House</span>
     <div class="section-line"></div>
@@ -633,7 +624,6 @@
     </div>
   </div>
 
-  <!-- Submit -->
   <div class="submit-section">
     <button class="submit-btn" onclick="submitForm()">Submit Walkthrough</button>
     <div class="validation-msg" id="validation-msg">Please select your name and location before submitting.</div>
@@ -642,7 +632,6 @@
 </div>
 </div>
 
-<!-- RESULT SCREEN -->
 <div id="result-screen">
   <div class="result-card" id="result-summary"></div>
   <div id="email-section" style="display:none;">
@@ -658,10 +647,10 @@
 <script>
   // ── CONFIG ──────────────────────────────────────────────────────
   const LOCATION_CONTACTS = {
-    "Baker":    "jakeaclara@gmail.com",
-    "Bartlett": "jakeaclara@gmail.com",
-    "Cathey":   "jakeaclara@gmail.com",
-    "Woodlawn": "jakeaclara@gmail.com"
+    "Baker":    "thomas.gilbert@compass-usa.com,lena.freeman@compass-usa.com",
+    "Bartlett": "thomas.gilbert@compass-usa.com,lena.freeman@compass-usa.com",
+    "Cathey":   "thomas.gilbert@compass-usa.com,lena.freeman@compass-usa.com",
+    "Woodlawn": "thomas.gilbert@compass-usa.com,lena.freeman@compass-usa.com"
   };
 
   const GOOGLE_SHEET_URL = ""; // Paste your Google Apps Script Web App URL here
@@ -682,7 +671,6 @@
 
   const state = {};
 
-  // Set date
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   document.getElementById('date-display').textContent = dateStr;
@@ -733,19 +721,15 @@
       return;
     }
 
-    // Gather notes
     Object.keys(state).forEach(catId => {
       const notesEl = document.querySelector(`#notes-${catId} textarea`);
       state[catId].notes = notesEl ? notesEl.value.trim() : '';
     });
 
-    // Get flagged items
     const flagged = Object.entries(state).filter(([,v]) => v.value === 'issue');
 
-    // Build result screen
     buildResultScreen(observer, location, flagged);
 
-    // Log to Google Sheets if configured
     if (GOOGLE_SHEET_URL) logToSheet(observer, location, flagged);
 
     document.getElementById('form-screen').style.display = 'none';
@@ -791,9 +775,8 @@
         ${flaggedHTML}
       `;
 
-      // Build email
-      const contact = LOCATION_CONTACTS[location] || "dining-operations@uchicago.edu";
-      const subject = `Dining Spot Check — ${location} | ${now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}`;
+      const contact = LOCATION_CONTACTS[location] || "thomas.gilbert@compass-usa.com,lena.freeman@compass-usa.com";
+      const subject = `Dining Walkthrough — ${location} | ${now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}`;
 
       let issueLines = flagged.map(([catId, data]) => {
         const note = data.notes ? `\n   Note: "${data.notes}"` : '';
@@ -802,11 +785,11 @@
 
       const body = `During today's walkthrough at ${location} (${dateStr}), the following items were flagged:\n\n${issueLines}\n\nThank you,\n${observer}\nUChicago Dining (UCD)`;
 
-      // Display email draft
+      const contactDisplay = contact.split(',').join(', ');
       document.getElementById('email-draft-display').innerHTML = `
         <div class="email-field">
           <div class="email-label">To</div>
-          <div class="email-value">${contact}</div>
+          <div class="email-value">${contactDisplay}</div>
         </div>
         <div class="email-field">
           <div class="email-label">Subject</div>
@@ -815,7 +798,6 @@
         <div class="email-body">${body.replace(/\n/g,'<br>')}</div>
       `;
 
-      // Mailto link
       const mailtoHref = `mailto:${contact}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       document.getElementById('mailto-link').href = mailtoHref;
       emailSection.style.display = 'block';
