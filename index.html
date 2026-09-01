@@ -776,7 +776,8 @@
       `;
 
       const contact = LOCATION_CONTACTS[location] || "thomas.gilbert@compass-usa.com,lena.freeman@compass-usa.com";
-      const subject = `Dining Walkthrough — ${location} | ${now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}`;
+      const timeStr = now.toLocaleTimeString('en-US', {hour: 'numeric', minute: '2-digit', hour12: true});
+      const subject = `Dining Walkthrough — ${location} | ${now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})} ${timeStr}`;
 
       let issueLines = flagged.map(([catId, data]) => {
         const note = data.notes ? `\n   Note: "${data.notes}"` : '';
@@ -792,13 +793,17 @@
           <div class="email-value">${contactDisplay}</div>
         </div>
         <div class="email-field">
+          <div class="email-label">CC</div>
+          <div class="email-value">UCDOpsTeam@teams.uchicago.edu</div>
+        </div>
+        <div class="email-field">
           <div class="email-label">Subject</div>
           <div class="email-value">${subject}</div>
         </div>
         <div class="email-body">${body.replace(/\n/g,'<br>')}</div>
       `;
 
-      const mailtoHref = `mailto:${contact}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const mailtoHref = `mailto:${contact}?cc=UCDOpsTeam@teams.uchicago.edu&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       document.getElementById('mailto-link').href = mailtoHref;
       emailSection.style.display = 'block';
     }
