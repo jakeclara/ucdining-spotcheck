@@ -653,7 +653,7 @@
     "Woodlawn": "thomas.gilbert@compass-usa.com,lena.freeman@compass-usa.com"
   };
 
-  const GOOGLE_SHEET_URL = ""; // Paste your Google Apps Script Web App URL here
+  const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbxIlrhbjPe0vgLtowp0Fi--GLuV06NI0P58vN5HW9L6U9FinFdzx85b1inwdFdDy1gi/exec";
 
   const CATEGORIES = {
     "foh-1": "FOH — Food Quality & Presentation",
@@ -783,7 +783,7 @@
         return `• ${CATEGORIES[catId]}${note}`;
       }).join('\n\n');
 
-      const body = `During today's walkthrough at ${location} (${dateStr}), the following items were flagged:\n\n${issueLines}\n\nThank you,\n${observer}\nUChicago Dining (UCD)`;
+      const body = `During today's walkthrough at ${location} (${dateStr}), the following items were flagged:\n\n${issueLines}\n\nThank you,`;
 
       const contactDisplay = contact.split(',').join(', ');
       document.getElementById('email-draft-display').innerHTML = `
