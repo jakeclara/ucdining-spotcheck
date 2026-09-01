@@ -460,12 +460,12 @@
       <label>Your Name</label>
       <select id="observer">
         <option value="">Select name...</option>
-        <option>Mike K.</option>
-        <option>Michael J.</option>
-        <option>David Q.</option>
-        <option>Tameka H.</option>
-        <option>Jake C.</option>
-        <option>Rey V.</option>
+        <option>Mike Kline</option>
+        <option>Michael Jennings</option>
+        <option>David Quiroz</option>
+        <option>Tameka Harris</option>
+        <option>Jake Clara</option>
+        <option>Rey Villalobos</option>
       </select>
     </div>
     <div class="field">
@@ -784,7 +784,7 @@
         return `• ${CATEGORIES[catId]}${note}`;
       }).join('\n\n');
 
-      const body = `During today's walkthrough at ${location} (${dateStr}), the following items were flagged:\n\n${issueLines}\n\nThank you,`;
+      const body = `During today's walkthrough at ${location} (${dateStr}), the following items were flagged:\n\n${issueLines}\n\nThank you,\n${observer}\nUChicago Dining`;
 
       const contactDisplay = contact.split(',').join(', ');
       document.getElementById('email-draft-display').innerHTML = `
