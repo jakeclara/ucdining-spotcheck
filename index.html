@@ -800,7 +800,7 @@
         return `• ${CATEGORIES[catId]}${note}`;
       }).join('\n\n');
 
-      const body = `During today's spot check walkthrough at ${location} Dining (${dateStr}), the following items were flagged:\n\n${issueLines}\n\nThank you,\n${observer}\nUChicago Dining (UCD)`;
+      const body = `During today's walkthrough at ${location} (${dateStr}), the following items were flagged:\n\n${issueLines}\n\nThank you,\n${observer}\nUChicago Dining (UCD)`;
 
       // Display email draft
       document.getElementById('email-draft-display').innerHTML = `
